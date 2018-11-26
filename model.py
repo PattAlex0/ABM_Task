@@ -2,14 +2,14 @@
 ## Modules ##
 #############
 
-from random import randint, random  #randint can be used to produce a random integer
-                                    #random can be used to produce a random number between 0 and 1
+from random import randint, random as rand #randint can be used to produce a random integer
+                                           #random can be used to produce a random float between 0 and 1
 
-from operator import itemgetter     #itemgetter can be used to select specific elements
+from operator import itemgetter            #itemgetter can be used to select specific elements
 
-from time import clock              #clock can be used to see how long a program takes to run
+from time import clock                     #clock can be used to see how long a program takes to run
 
-import matplotlib.pyplot            #Can be used to create graphs
+import matplotlib.pyplot as pyp            #Can be used to create graphs
 
 ###################
 ## Timer - Start ##
@@ -22,7 +22,7 @@ timeStart = clock()     #Starting value of timer
 ###############
 
 ## Distance Calculator ##   
-def distanceBetween(agentsRowA, agentsRowB):    #Calculates the distance between the two agents
+def distanceBetween(agentsRowA, agentsRowB):    #Calculates the distance between two agents
     answer = ((agentsRowA[0] - agentsRowB[0])**2) + ((agentsRowA[1] - agentsRowB[1])**2)**0.5
     print(answer)
     return answer
@@ -54,13 +54,13 @@ for i in range(iterations):     #Movement direction is determined by use of rand
     for i in range(numOfAgents):
         
         ## Y Movement ##
-        if random() < 0.5:
+        if rand() < 0.5:
             agents[i][0] = (agents[i][0] + 1) % 100
         else:
             agents[i][0] = (agents[i][0] - 1) % 100
 
         ## X Movement ##
-        if random() < 0.5:
+        if rand() < 0.5:
             agents[i][1] = (agents[i][1] + 1) % 100
         else:
             agents[i][1] = (agents[i][1] - 1) % 100
@@ -82,8 +82,8 @@ for i in range(numOfAgents):    #Calculates the distance between each agent usin
             agentsDistance.append(distanceBetween(agents[i], agents[j]))
 
 ## Distance Printer ##
-print("Maximum distance =", str(max(agentsDistance)),   #Prints the maximum and minimum distances
-      "/ Minimum distance =", str(min(agentsDistance)))
+print("Maximum distance = " + str(max(agentsDistance)) +   #Prints the maximum and minimum distances
+      ", Minimum distance = " + str(min(agentsDistance)))
 
 #################                  
 ## Timer - End ##
@@ -97,16 +97,16 @@ print("Time = ", str(timeEnd - timeStart)) #Prints the total time taken for the 
 ###########
 
 ## Graph Coordinates ##
-matplotlib.pyplot.ylim(0, 99)           #Set x and y limits for graph
-matplotlib.pyplot.xlim(0, 99)
+pyp.ylim(0, 99)           #Set x and y limits for graph
+pyp.xlim(0, 99)
 
 ## Agent Plotting ##
 for i in range(numOfAgents):            #Plots each agent on the graph
-    matplotlib.pyplot.scatter(agents[i][1],agents[i][0])
+    pyp.scatter(agents[i][1],agents[i][0])
 
 ## Maximum Colour ## 
 m = max(agents, key = itemgetter(1))    #Colours the point furthest east black  
-matplotlib.pyplot.scatter(m[1], m[0], color='black')
+pyp.scatter(m[1], m[0], color='black')
 
 ## Display Graph##
-matplotlib.pyplot.show()
+pyp.show()
