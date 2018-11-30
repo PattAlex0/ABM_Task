@@ -2,8 +2,7 @@
 ## Modules ##
 #############
 
-from random import randint, random as rand #randint can be used to produce a random integer
-                                           #random can be used to produce a random float between 0 and 1
+import agentFramework as AF
 
 from operator import itemgetter            #itemgetter can be used to select specific elements
 
@@ -16,16 +15,6 @@ import matplotlib.pyplot as pyp            #Can be used to create graphs
 ###################
 
 timeStart = clock()     #Starting value of timer
-
-###############
-## Functions ##
-###############
-
-## Distance Calculator ##   
-def distanceBetween(agentsRowA, agentsRowB):    #Calculates the distance between two agents
-    answer = ((agentsRowA[0] - agentsRowB[0])**2) + ((agentsRowA[1] - agentsRowB[1])**2)**0.5
-    print(answer)
-    return answer
 
 ############
 ## Values ##
@@ -46,24 +35,15 @@ iterations = 100        #Number of times the movement loop is run
 
 ## Initial Assignment ##
 for i in range(numOfAgents):    #Assigns starting x and y values for each agent.
-    agents.append([randint(0, 99), randint(0, 99)])
+    agents.append(AF.agent())
 
 ## Movement Loop ##
 for i in range(iterations):     #Movement direction is determined by use of random() function
                                 #Modulus operater is used to divide each number by 100; if any number goes to 100, it will have 0 remainders and so be assigned a 0 coordinate  
     for i in range(numOfAgents):
         
-        ## Y Movement ##
-        if rand() < 0.5:
-            agents[i][0] = (agents[i][0] + 1) % 100
-        else:
-            agents[i][0] = (agents[i][0] - 1) % 100
-
-        ## X Movement ##
-        if rand() < 0.5:
-            agents[i][1] = (agents[i][1] + 1) % 100
-        else:
-            agents[i][1] = (agents[i][1] - 1) % 100
+        agents[i].move()
+        
             
 ###################
 ## Distance Loop ##
@@ -78,8 +58,8 @@ for i in range(numOfAgents):    #Calculates the distance between each agent usin
         if j in agentsDum:
             continue
         else:
-            distanceBetween(agents[i], agents[j])
-            agentsDistance.append(distanceBetween(agents[i], agents[j]))
+            agents[i].distanceBetween(agents[j])
+            agentsDistance.append(agents[i].distanceBetween(agents[j]))
 
 ## Distance Printer ##
 print("Maximum distance = " + str(max(agentsDistance)) +   #Prints the maximum and minimum distances
@@ -102,11 +82,11 @@ pyp.xlim(0, 99)
 
 ## Agent Plotting ##
 for i in range(numOfAgents):            #Plots each agent on the graph
-    pyp.scatter(agents[i][1],agents[i][0])
+    pyp.scatter(agents[i].x,agents[i].y)
 
 ## Maximum Colour ## 
-m = max(agents, key = itemgetter(1))    #Colours the point furthest east black  
-pyp.scatter(m[1], m[0], color='black')
+#m = max(agents, key = itemgetter(1))    #Colours the point furthest east black  
+#pyp.scatter(m[1], m[0], color='black')
 
 ## Display Graph##
 pyp.show()
