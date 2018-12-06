@@ -2,7 +2,9 @@
 ## Modules ##
 #############
 
-import agentFramework as AF
+import agentFramework as AF                #AF is the file which contains the agent class
+
+import csv                                 #csv can be used to read csv files
 
 from operator import itemgetter            #itemgetter can be used to select specific elements
 
@@ -20,7 +22,8 @@ timeStart = clock()     #Starting value of timer
 ## Values ##
 ############
 
-## Lists ##
+## Agent Lists ##
+environment = []        #Holds values for the environment
 agents = []             #Holds values for each agent
 agentsDum = []          #Holds values for each agent; only used within loop
 agentsDistance = []     #Holds distances between agents
@@ -29,13 +32,30 @@ agentsDistance = []     #Holds distances between agents
 numOfAgents = 10        #Number of agents
 iterations = 100        #Number of times the movement loop is run
 
+######################
+##    Environment   ##
+######################
+
+f = open('in.txt', newline = '')                        #Opens 'in', which contains raster data that will be used to represent the environment
+reader = csv.reader(f, quoting = csv.QUOTE_NONNUMERIC)  #Reads raster data as a csv
+
+
+for row in reader:                                      #Copies the csv data into the environment list
+    rowlist = []
+    for value in row:
+        
+        rowlist.append(value)
+
+    environment.append(rowlist)
+        
+f.close()
 ####################
 ## Agent Movement ##
 ####################
 
 ## Initial Assignment ##
 for i in range(numOfAgents):    #Assigns starting x and y values for each agent.
-    agents.append(AF.agent())
+    agents.append(AF.agent(environment))
 
 ## Movement Loop ##
 for i in range(iterations):     #Movement direction is determined by use of random() function
@@ -43,6 +63,7 @@ for i in range(iterations):     #Movement direction is determined by use of rand
     for i in range(numOfAgents):
         
         agents[i].move()
+        agents[i].eat()
         
             
 ###################
@@ -79,6 +100,7 @@ print("Time = ", str(timeEnd - timeStart)) #Prints the total time taken for the 
 ## Graph Coordinates ##
 pyp.ylim(0, 99)           #Set x and y limits for graph
 pyp.xlim(0, 99)
+pyp.imshow(environment)
 
 ## Agent Plotting ##
 for i in range(numOfAgents):            #Plots each agent on the graph
@@ -90,3 +112,4 @@ for i in range(numOfAgents):            #Plots each agent on the graph
 
 ## Display Graph##
 pyp.show()
+
