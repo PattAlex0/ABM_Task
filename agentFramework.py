@@ -12,12 +12,14 @@ class agent():
 
     ##X and Y##
 
-    def __init__(self, environment):    #Generates x and y coordinates between 0 and 99
+    def __init__(self, environment, agents):    #Generates x and y coordinates between 0 and 99
         self._x = randint(0,99)
         self._y = randint(0,99)
 
         self.environment = environment
         self.store = 0
+
+        self.agents = agents
 
     def getx(self):
         return self._x
@@ -52,12 +54,21 @@ class agent():
 
     def distanceBetween(self1, self2):              #Calculates the distance between agents
         answer = ((self1._x - self2._x)**2) + ((self1._y - self2._y)**2)**0.5
-        print(answer)
         return answer
     
 
     def eat(self):                                  #Allows agents to 'eat' the environment
         if self.environment[self._y][self._x] > 10:
             self.environment[self._y][self._x] -= 10
-            self.store += 10 
+            self.store += 10
+
+    def shareWithNeighbours(self, neighbourhood):
+        for agent in self.agents:
+            distance = self.distanceBetween(agent)
+
+            if distance <= neighbourhood:
+               distSum = self.store + agent.store
+               distAvg = distSum / 2
+               self.store = distAvg
+               agent.store = distAvg
     

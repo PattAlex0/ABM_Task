@@ -4,6 +4,8 @@
 
 import agentFramework as AF                #AF is the file which contains the agent class
 
+from random import shuffle
+
 import csv                                 #csv can be used to read csv files
 
 from operator import itemgetter            #itemgetter can be used to select specific elements
@@ -31,6 +33,7 @@ agentsDistance = []     #Holds distances between agents
 ## Iterables ##
 numOfAgents = 10        #Number of agents
 iterations = 100        #Number of times the movement loop is run
+neighbourhood = 20
 
 ######################
 ##    Environment   ##
@@ -41,6 +44,7 @@ reader = csv.reader(f, quoting = csv.QUOTE_NONNUMERIC)  #Reads raster data as a 
 
 
 for row in reader:                                      #Copies the csv data into the environment list
+    
     rowlist = []
     for value in row:
         
@@ -55,7 +59,7 @@ f.close()
 
 ## Initial Assignment ##
 for i in range(numOfAgents):    #Assigns starting x and y values for each agent.
-    agents.append(AF.agent(environment))
+    agents.append(AF.agent(environment, agents))
 
 ## Movement Loop ##
 for i in range(iterations):     #Movement direction is determined by use of random() function
@@ -64,11 +68,14 @@ for i in range(iterations):     #Movement direction is determined by use of rand
         
         agents[i].move()
         agents[i].eat()
+        agents[i].shareWithNeighbours(neighbourhood)
         
             
 ###################
 ## Distance Loop ##
 ###################
+
+shuffle(agents)
 
 ## Distance Calculator Loop ##            
 for i in range(numOfAgents):    #Calculates the distance between each agent using the distanceBetween function
