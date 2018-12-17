@@ -30,8 +30,8 @@ The ABM works in several steps:
 5. Create an animation function which includes agent behaviours
 6. Create a generator function which determines how long the animation/model will run for.
 7. Run the model/animation
-8. Determine the maximum and minimum distance between agents
-9. Save modified environment to txt file
+8. Save modified environment to txt file
+9. Save agent report to txt file
 
 # Modules
 This ABM utilises several modules:
